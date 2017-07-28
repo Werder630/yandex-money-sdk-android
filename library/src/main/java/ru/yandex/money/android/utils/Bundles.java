@@ -26,7 +26,6 @@ package ru.yandex.money.android.utils;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,10 +45,8 @@ public final class Bundles {
      * @return bundle
      */
     @NonNull
-    public static Bundle writeStringMapToBundle(@Nullable Map<String, String> map) {
+    public static Bundle writeStringMapToBundle(@NonNull Map<String, String> map) {
         Bundle bundle = new Bundle();
-        if (map == null) return bundle;
-
         for (String key : map.keySet()) {
             bundle.putString(key, map.get(key));
         }
