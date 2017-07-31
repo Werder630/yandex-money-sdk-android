@@ -24,6 +24,7 @@
 
 package ru.yandex.money.android.parcelables;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -44,13 +45,16 @@ public abstract class BaseProcessPaymentParcelable implements Parcelable {
     }
 
     protected BaseProcessPaymentParcelable(@NonNull Parcel parcel, @NonNull BaseProcessPayment.Builder builder) {
-        value = builder.setStatus((BaseProcessPayment.Status) parcel.readSerializable())
+        builder.setStatus((BaseProcessPayment.Status) parcel.readSerializable())
                 .setError((Error) parcel.readSerializable())
                 .setInvoiceId(parcel.readString())
-                .setAcsUri(parcel.readString())
-                .setAcsParams(Parcelables.readStringMap(parcel))
-                .setNextRetry(parcel.readLong())
-                .create();
+                .setAcsUri(parcel.readString());
+        if (parcel.readBundle(Bundle.class.getClassLoader()) != null) {
+            builder.setAcsParams(Parcelables.readStringMap(parcel));
+        }
+        builder.setNextRetry(parcel.readLong());
+
+        value = builder.create();
     }
 
     @Override
@@ -64,7 +68,9 @@ public abstract class BaseProcessPaymentParcelable implements Parcelable {
         dest.writeSerializable(value.error);
         dest.writeString(value.invoiceId);
         dest.writeString(value.acsUri);
-        Parcelables.writeStringMap(dest, value.acsParams);
+        if (value.acsParams != null) {
+            Parcelables.writeStringMap(dest, value.acsParams);
+        }
         dest.writeLong(value.nextRetry);
     }
 }

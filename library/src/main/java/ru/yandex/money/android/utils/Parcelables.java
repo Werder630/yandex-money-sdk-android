@@ -88,7 +88,7 @@ public final class Parcelables {
      * @param parcel parcel
      * @param map string map
      */
-    public static void writeStringMap(@NonNull Parcel parcel, @Nullable Map<String, String> map) {
+    public static void writeStringMap(@NonNull Parcel parcel, @NonNull Map<String, String> map) {
         parcel.writeBundle(Bundles.writeStringMapToBundle(map));
     }
 
