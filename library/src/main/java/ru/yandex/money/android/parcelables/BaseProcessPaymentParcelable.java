@@ -45,14 +45,14 @@ public abstract class BaseProcessPaymentParcelable implements Parcelable {
     }
 
     protected BaseProcessPaymentParcelable(@NonNull Parcel parcel, @NonNull BaseProcessPayment.Builder builder) {
-        builder.setStatus((BaseProcessPayment.Status) parcel.readSerializable())
-                .setError((Error) parcel.readSerializable())
-                .setInvoiceId(parcel.readString())
-                .setAcsUri(parcel.readString());
         if (parcel.readBundle(Bundle.class.getClassLoader()) != null) {
             builder.setAcsParams(Parcelables.readStringMap(parcel));
         }
-        builder.setNextRetry(parcel.readLong());
+        builder.setStatus((BaseProcessPayment.Status) parcel.readSerializable())
+                .setError((Error) parcel.readSerializable())
+                .setInvoiceId(parcel.readString())
+                .setAcsUri(parcel.readString())
+                .setNextRetry(parcel.readLong());
 
         value = builder.create();
     }
